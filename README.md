@@ -1,55 +1,27 @@
 # Lab 3 — hello-app on Kubernetes with Terraform
 
-Name:
+**Name:** Suchit  
+**Roll Number:** 261100680008
 
-Roll number:
+## Part 4: Reusable module with dev and prod environments
 
-## Part 1: first `terraform plan`
+Created a reusable `hello-app` Terraform module and used it in two separate environments:
 
-Paste the `Plan:` line and the summary above it.
+- **Dev:** Namespace `dev`, image tag `v2`, 3 replicas, Service port `8080`.
+- **Prod:** Namespace `prod`, image tag `v2`, 3 replicas, Service port `8090`.
 
+Command:
+```powershell
+kubectl get svc -A
 ```
 
+Output:
+```text
+NAMESPACE     NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP                  3d17h
+dev           hello-app    LoadBalancer   10.96.130.108   172.21.0.7    8080:32377/TCP           13m
+kube-system   kube-dns     ClusterIP      10.96.0.10      <none>        53/UDP,53/TCP,9153/TCP   3d17h
+prod          hello-app    LoadBalancer   10.96.93.206    172.21.0.8    8090:32068/TCP           29m
 ```
 
-## Part 1: `terraform output -raw url`
-
-```
-
-```
-
-## Part 2: plan for the v1 → v2 image change
-
-Paste the lines that show the image change, and the `Plan:` line.
-
-```
-
-```
-
-## Part 3: plan that found the drift after `kubectl scale`
-
-```
-
-```
-
-## Part 4: `kubectl get svc -A` showing dev and prod
-
-```
-
-```
-
-## Break it: the error after deleting `terraform.tfstate`
-
-```
-
-```
-
-## Break it: the wrong selector
-
-What did you see, and how did you find the cause? One or two sentences.
-
-
-
-## Screenshot
-
-Save a browser screenshot as `screenshot.png` in the repository root.
+Both environments were deployed successfully using their separate Terraform configurations and state files.
