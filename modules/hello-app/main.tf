@@ -1,35 +1,13 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 3.4"
-    }
+resource "kubernetes_namespace_v1" "app" {
+  metadata {
+    name = var.namespace
   }
-}
-
-provider "kubernetes" {
-  config_path    = "C:/Users/suchi/.kube/config"
-  config_context = "docker-desktop"
-}
-
-variable "image_tag" {
-  type    = string
-  default = "v2"
-}
-
-variable "replicas" {
-  type    = number
-  default = 3
-}
-
-variable "port" {
-  type    = number
-  default = 8080
 }
 
 resource "kubernetes_deployment_v1" "hello" {
   metadata {
-    name = "hello-app"
+    name      = "hello-app"
+    namespace = kubernetes_namespace_v1.app.metadata[0].name
   }
 
   spec {
@@ -64,7 +42,8 @@ resource "kubernetes_deployment_v1" "hello" {
 
 resource "kubernetes_service_v1" "hello" {
   metadata {
-    name = "hello-app"
+    name      = "hello-app"
+    namespace = kubernetes_namespace_v1.app.metadata[0].name
   }
 
   spec {
@@ -79,8 +58,4 @@ resource "kubernetes_service_v1" "hello" {
       target_port = 80
     }
   }
-}
-
-output "url" {
-  value = "http://localhost:${var.port}"
 }
